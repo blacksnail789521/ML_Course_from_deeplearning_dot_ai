@@ -1,0 +1,9 @@
+# Exclude
+*.*
+**/.ipynb_checkpoints/**
+
+# Include
+!.gitignore
+!*.py
+!*.ipynb
+!**/images/**
