@@ -1,6 +1,5 @@
 # Exclude
 *.*
-**/.ipynb_checkpoints/**
 
 # Include
 !.gitignore
