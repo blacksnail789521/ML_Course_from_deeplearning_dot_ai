@@ -108,7 +108,10 @@ def load_vgg_model(path):
         W, b = _weights(layer, layer_name)
         W = tf.constant(W)
         b = tf.constant(np.reshape(b, (b.size)))
-        return tf.nn.conv2d(prev_layer, filter=W, strides=[1, 1, 1, 1], padding='SAME') + b
+        try:
+            return tf.nn.conv2d(prev_layer, filter=W, strides=[1, 1, 1, 1], padding='SAME') + b
+        except:
+            return tf.nn.conv2d(prev_layer, filters=W, strides=[1, 1, 1, 1], padding='SAME') + b
 
     def _conv2d_relu(prev_layer, layer, layer_name):
         """
@@ -185,4 +188,8 @@ def save_image(path, image):
     
     # Clip and Save the image
     image = np.clip(image[0], 0, 255).astype('uint8')
-    scipy.misc.imsave(path, image)
+    try:
+        scipy.misc.imsave(path, image)
+    except:
+        import imageio
+        np.array(imageio.imwrite(path, image))
