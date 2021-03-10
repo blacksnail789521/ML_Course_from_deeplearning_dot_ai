@@ -8,7 +8,7 @@ from keras.utils.data_utils import get_file
 from keras.preprocessing.sequence import pad_sequences
 import numpy as np
 import random
-import sys
+import sys, os
 import io
 
 def build_data(text, Tx = 40, stride = 3):
@@ -114,8 +114,21 @@ def on_epoch_end(epoch, logs):
     # Stop at the end of a line (4 lines)
     print()
  """   
+
+# Get exec_path if we'are in Colab
+try:
+    import google.colab
+    IN_COLAB = True
+except:
+    IN_COLAB = False
+if IN_COLAB:
+    exec_path = r"G:\My Drive\Online Course\deeplearning.ai\02_Deep Learning\05_Sequence Models\Assignments\Week01\02_Dinosaur Island -- Character-level language model"
+    exec_path = "/content/drive/MyDrive/" + exec_path.replace("G:\\My Drive\\", "").replace("\\", "/")
+else:
+    exec_path = ""
+
 print("Loading text data...")
-text = io.open('shakespeare.txt', encoding='utf-8').read().lower()
+text = io.open(os.path.join(exec_path, 'shakespeare.txt'), encoding='utf-8').read().lower()
 #print('corpus length:', len(text))
 
 Tx = 40
@@ -129,7 +142,7 @@ X, Y = build_data(text, Tx, stride = 3)
 print("Vectorizing training set...")
 x, y = vectorization(X, Y, n_x = len(chars), char_indices = char_indices) 
 print("Loading model...")
-model = load_model('models/model_shakespeare_kiank_350_epoch.h5')
+model = load_model(os.path.join(exec_path, 'models', 'model_shakespeare_kiank_350_epoch.h5'))
 
 
 def generate_output():
